@@ -1,0 +1,117 @@
+program ReadVectorBlocks
+  implicit none
+
+  ! Define variables
+  integer, parameter :: max_size = 6
+  integer, parameter :: num_blocks = 5  ! Assuming 5 blocks
+  integer :: i, j, block_size, k, l
+  real, dimension(:), allocatable :: u, v, b
+  real, dimension(:,:), allocatable :: matrix, uv, inverse
+  real :: dot_uv
+  real, dimension(:), allocatable :: x
+  integer :: output_unit ! Hardcoded output unit
+  character(9) :: output_file ! Hardcoded output filename
+  
+  ! Open the file for reading
+  open(unit=10, file='vectores.txt', status='old')
+
+  ! Hardcoded output unit and filename
+  output_unit = 9
+  output_file = "output.txt"
+
+  do i = 1, num_blocks
+    ! Set the block size based on the iteration
+    block_size = i + 1
+    allocate(u(block_size))
+    allocate(v(block_size))
+    allocate(b(block_size))
+    
+    ! Read u vector
+    read(10, *) (u(j), j = 1, block_size)
+    ! Read v vector
+    read(10, *) (v(j), j = 1, block_size)
+    ! Read b vector
+    read(10, *) (b(j), j = 1, block_size)
+
+    ! Allocate the uv and matrix matrices with the correct dimensions
+    allocate(uv(block_size, block_size))
+    allocate(matrix(block_size, block_size))
+    allocate(inverse(block_size, block_size))
+    allocate(x(block_size))  
+    
+    ! Compute uv'
+    call outer_product(u, v, block_size, uv)
+    
+    ! Compute the matrix matrix
+    dot_uv = dot_product(u, v)
+    
+    do j = 1, block_size
+      do k = 1, block_size
+        if (j == k) then
+          matrix(j, k) = 1.0d0 + uv(j, k)
+          inverse(j, k) = 1.0d0 - uv(j, k)/(1 + dot_uv)
+        else
+          matrix(j, k) = uv(j, k)
+          inverse(j, k) = -uv(j, k)/(1 + dot_uv)
+        end if
+      end do
+    end do
+    
+    do j = 1, block_size
+      x(j) = b(j) - dot_product(uv(j, :), b)/(1 + dot_uv)
+    end do
+    
+    ! Create or open the output file
+    if (i == 1) then
+      open(unit=output_unit, file='output.txt', status='replace')
+    else
+      open(unit=output_unit, file='output.txt', status='old', position='append')
+    end if
+    
+    
+    ! Write the matrices and solution x to the same output file
+    write(output_unit, '(A,I0)') "Block size: ", block_size
+    write(output_unit, '(A)') "Matrix:"
+    do j = 1, block_size
+      write(output_unit, '(6(1X,F14.6))') (matrix(j, k), k = 1, block_size)
+    end do
+    write(output_unit, '(A)') "Inverse:"
+    do j = 1, block_size
+      write(output_unit, '(6(1X,F14.6))') (inverse(j, k), k = 1, block_size)
+    end do
+    write(output_unit, '(A)') "Solution x:"
+    write(output_unit, '(6(1X,F14.6))') (x(j), j = 1, block_size)
+        
+    ! Close the output file
+    close(output_unit)
+    
+    ! Deallocate the matrices and vectors
+    deallocate(x)
+    deallocate(inverse)
+    deallocate(matrix)
+    deallocate(uv)
+    deallocate(b)
+    deallocate(v)
+    deallocate(u)
+    
+  end do
+  
+  ! Close the input file
+  close(10)
+
+contains
+
+subroutine outer_product(u, v, n, uv)
+  integer, intent(in) :: n
+  real, dimension(n), intent(in) :: u, v
+  real, dimension(n, n), intent(out) :: uv
+  integer :: i, j
+
+  do i = 1, n
+    do j = 1, n
+      uv(i, j) = u(i) * v(j)
+    end do
+  end do
+end subroutine outer_product
+
+end program ReadVectorBlocks

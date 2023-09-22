@@ -1,0 +1,53 @@
+Parte 1:
+ Numero 1: T: -27 
+ Numero 1 rT:  7                                                                                                         Numero 1 rT:  7
+ Numero 1 rN:  7
+ Numero 2 T:  -12
+ Numero 2 rT:  5
+ Numero 2 rN:  5
+ Numero 3 T:  83
+ Numero 3 rT:  15
+ Numero 3 rN:  15
+ Numero 4 T:  -27
+ Numero 4 rT:  7
+ Numero 4 rN:  7
+ Numero 5 T:  -29
+ Numero 5 rT:  5
+ Numero 5 rN:  5
+ Numero 6 T:  -105
+ Numero 6 rT:  14
+ Numero 6 rN:  14
+ Numero 7 T:  230
+ Numero 7 rT:  9
+ Numero 7 rN:  9
+ Numero 8 T:  -34
+ Numero 8 rT:  0
+ Numero 8 rN:  0
+ Numero 9 T:  -125
+ Numero 9 rT:  11
+ Numero 9 rN:  11
+ Numero 10 T:  -27
+ Numero 10 rT:  7
+ Numero 10 rN:  7
+
+Parte 2:
+T 0  =  193615
+T 1  =  193608
+ T 2  =  193620
+ T 3  =  193628
+ T 4  =  193642
+ T 5  =  193626
+ T 6  =  193632
+ T 7  =  193617
+ T 8  =  193621
+ T 9  =  193648
+ T 10  =  193632
+ T 11  =  193622
+ T 12  =  193604
+ T 13  =  193606
+ T 14  =  193592
+ T 15  =  193601
+ S =  3097914
+ T =  193615
+ rN =  16
+ rT =  2

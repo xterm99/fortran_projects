@@ -3,6 +3,9 @@ module ExtractDataModule
 
 contains
 
+  !-----
+  !- Lee un número desde un archivo y lo convierte en un array de dígitos.
+  !-----
   subroutine NumberReader(filename, i, rowArray, num_digits)
     implicit none
     character(*), intent(in) :: filename
@@ -14,35 +17,38 @@ contains
     character(max_digits) :: line
     integer :: unit_number, j
 
-    ! Open the file
+    ! Abre el archivo
     open(unit=unit_number, file=filename, status='old', action='read')
 
-    ! Read and process the i-th row from the file
+    ! Lee y procesa la fila i-ésima del archivo
     do j = 1, i
       read(unit_number, '(A)') line
     end do
 
-    ! Determine the number of digits in the row
+    ! Determina el número de dígitos en la fila
     num_digits = len_trim(line)
 
-    ! Allocate the array with the appropriate size
+    ! Asigna el tamaño adecuado al array
     allocate(rowArray(num_digits))
 
-    ! Convert the row string to an array of digits
+    ! Convierte la cadena de la fila en un array de dígitos
     do j = 1, num_digits
       rowArray(j) = ichar(line(j:j)) - ichar('0')
     end do
 
-    ! Close the file
+    ! Cierra el archivo
     close(unit_number)
 
   end subroutine NumberReader
 
+  !-----
+  !- Invierte un array de enteros.
+  !-----
   subroutine ReverseArray(arr_in, n, arr_out)
     implicit none
-    integer, intent(in) :: arr_in(:)    ! Input array to be reversed
-    integer, intent(in) :: n            ! Number of elements in the array
-    integer, intent(out) :: arr_out(n)  ! Output array to store the reversed result
+    integer, intent(in) :: arr_in(:)    ! Array de entrada a invertir
+    integer, intent(in) :: n            ! Número de elementos en el array
+    integer, intent(out) :: arr_out(n)  ! Array de salida para almacenar el resultado invertido
     integer :: i
 
     do i = 1, n
@@ -57,23 +63,29 @@ module Tcalculations
 
 contains
 
-  ! Private function to calculate T_i.
+  !-----
+  !- Función privada para calcular T_i.
+  !-----
   function T_at(inputArray, at) result(res)
     implicit none
     integer, dimension(:), intent(in) :: inputArray
     integer, intent(in) :: at
-    integer :: bound
     integer :: res
+    integer :: j
 
-    ! Check we don't go out of bounds
-    bound = at + 32
-    if (bound > size(inputArray)) then
-      res = inputArray(at) + inputArray(at+16)
-    else
-      res = inputArray(at) + inputArray(at+16) + inputArray(at+32)
-    endif
+    res = 0
+    j = at
+
+    do while (j <= size(inputArray))
+      res = res + inputArray(j)
+      j = j + 16
+    end do
+
   end function T_at
 
+  !-----
+  !- Calcula el valor de T.
+  !-----
   function T(inputArray) result(res)
     implicit none
     integer, intent(in) :: inputArray(:)
@@ -89,56 +101,60 @@ contains
     + 5 * (T_at(inputArray, 8) - T_at(inputArray, 16))
 
   end function T
-  
-	function RemainderBy17(inputArray) result(remainder)
-	  implicit none
-	  integer, intent(in) :: inputArray(:)
-	  integer :: remainder
-	  integer :: i, currentRemainder
-	
-	  currentRemainder = 0
-	
-	do i = 1, size(inputArray)
-	    currentRemainder = MOD(currentRemainder * 10 + inputArray(i), 17)
-	end do
-	  remainder = currentRemainder
-	end function RemainderBy17
+
+  !-----
+  !- Calcula el resto de la división por 17.
+  !-----
+  function RemainderBy17(inputArray) result(remainder)
+    implicit none
+    integer, intent(in) :: inputArray(:)
+    integer :: remainder
+    integer :: i, currentRemainder
+
+    currentRemainder = 0
+
+    do i = 1, size(inputArray)
+      currentRemainder = MOD(currentRemainder * 10 + inputArray(i), 17)
+    end do
+    remainder = currentRemainder
+  end function RemainderBy17
 
 end module Tcalculations
+
 program DivisibilityBy17
   use ExtractDataModule
   use Tcalculations
   implicit none
 
-  integer, dimension(:), allocatable :: rowArray, reversedArray  ! Adjust the size as needed
+  integer, dimension(:), allocatable :: rowArray, reversedArray  ! Ajustar el tamaño según sea necesario
   integer :: num_digits, j
   integer :: result_T, rT, rN
   integer :: i
 
-  ! Loop through lines 1 to 10 in numbers.dat
+  ! Itera a través de las líneas 1 a 10 en numbers.dat
   do i = 1, 10
-    ! Call the NumberReader subroutine to read and store the i-th row
+    ! Llama a la subrutina NumberReader para leer y almacenar la fila i-ésima
     call NumberReader('numbers.dat', i, rowArray, num_digits)
 
-    ! Call the ReverseArray subroutine to reverse the rowArray
+    ! Llama a la subrutina ReverseArray para invertir rowArray
     allocate(reversedArray(num_digits))
     call ReverseArray(rowArray, num_digits, reversedArray)
 
-    ! Call the T function to calculate the result_T
+    ! Llama a la función T para calcular result_T
     result_T = T(reversedArray)
 
-    ! Calculate the remainder of result_T when divided by 17
+    ! Calcula el resto de result_T cuando se divide por 17
     rT = modulo(result_T, 17)
 
-    ! Calculate the remainder of rowArray when divided by 17
+    ! Calcula el resto de rowArray cuando se divide por 17
     rN = RemainderBy17(rowArray)
 
-    ! Print the results for the i-th line
-    print *, "Line", i, "Result T:", result_T
-    print *, "Line", i, "Remainder of Result T by 17:", rT
-    print *, "Line", i, "Remainder of rowArray by 17:", rN
+    ! Imprime los resultados para la línea i-ésima
+    print *, "Numero", i, "T: ", result_T
+    print *, "Numero", i, "rT: ", rT
+    print *, "Numero", i, "rN: ", rN
 
-    ! Deallocate arrays for the current line
+    ! Desasigna los arrays para la línea actual
     deallocate(rowArray)
     deallocate(reversedArray)
   end do

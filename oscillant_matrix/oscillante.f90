@@ -1,0 +1,63 @@
+program submatrix_example
+  implicit none
+
+  real :: tros, tros_min
+  integer :: row_index, column_index  
+  real :: matrix(20, 10)
+  integer :: i, k, l
+  real :: B(5, 5)  ! Define the B matrix
+  real :: C(5, 5)
+
+  tros_min = 1E30
+
+  ! Read the matrix from the input file
+  open(unit=10, file="matriz.txt", status='old', action='read')
+  do i = 1, 20
+    read(10, *) matrix(i, :)
+  end do
+  close(unit=10)
+  
+  ! Initialize tros_min before the loop
+  tros_min = HUGE(0.0) ! Initialize to a large value
+  row_index = 0
+  column_index = 0
+
+  do k = 1, 16 ! Adjust loop bounds to avoid out-of-bounds access
+    do l = 1, 6  ! Adjust loop bounds to avoid out-of-bounds access
+      tros = matrix(k,l) - matrix(k+1,l+1) + matrix(k+2,l+2) - matrix(k+3,l+3) + matrix(k+4,l+4)
+      if (tros < tros_min) then
+        tros_min = tros
+        row_index = k
+        column_index = l
+      end if
+    end do
+  end do
+  
+  ! Extract the submatrix B
+  B = matrix(row_index:row_index+4, column_index:column_index+4)
+  C = B
+  do k = 1, 8  ! Multiply C by B 8 more times (for a total of 9 multiplications)
+    C = matmul(C, B)
+  end do
+  
+  ! Open the output file
+  open(unit=20, file="output.txt", status='replace', action='write')
+
+  ! Write tros_min, row_index, and column_index to the file
+  write(20, *) "tros_min:", tros_min
+  write(20, *) "with row_index (i):", row_index
+  write(20, *) "with column_index(j):", column_index
+
+  ! Write the diagonal entries of C with a wider format
+  write(20, *) "Diagonal entries of C with 4 decimal places:"
+  do i = 1, 5
+    write(20, '(ES12.4)') C(i, i)
+  end do
+  
+  ! Close the output file
+  close(unit=20)
+  
+end program submatrix_example
+
+
+

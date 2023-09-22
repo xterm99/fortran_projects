@@ -1,0 +1,5 @@
+P READSUBMATRIX:main,#h("oscillante.f90",1)
+ V I,i,Integer,int,,0,#t("oscillante.f90",7)
+ V J,j,Integer,int,,0,#t("oscillante.f90",7)
+ V SUBMATRIX,submatrix,Real,float,,2,f(1:5,1:5),#t("oscillante.f90",5)
+EP

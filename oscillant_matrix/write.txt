@@ -1,0 +1,9 @@
+ tros_min: -23.0836010
+ with row_index (i): 3
+ with column_index(j): 5
+ Diagonal entries of C with 4 decimal places:
+  2.6308E+09
+  2.0173E+09
+  1.0549E+10
+ -1.4449E+09
+  6.4014E+09

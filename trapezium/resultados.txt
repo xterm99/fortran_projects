@@ -1,0 +1,6 @@
+ El ßrea del trapecio  1  es    1.5357878051030028E+04
+ El ßrea del trapecio  2  es    1.7731869738365785E+04
+ El ßrea del trapecio  3  es    2.1086455434442742E+04
+ El ßrea del trapecio  4  es    8.7474230449651304E+02
+ El ßrea del trapecio  5  es    1.9547428273236470E+04
+ El ßrea del trapecio  6  es    1.8016924020960363E+04

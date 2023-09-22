@@ -22,27 +22,24 @@ NI_RM = fbrm
 .SUFFIXES: .f90 .o 
 
 #Output file
-NI_OUTPUT = main.exe
+NI_OUTPUT = inverse.exe
 
 #Target name
-NI_TARGET = main.exe
+NI_TARGET = inverse.exe
 
 #Object files
 NI_OBJS =	 \
-	main.o
+	inverse.o
 
 #Depend Object files
 NI_DOBJS =	 \
-	main.o
+	inverse.o
 
 #Prospective Module files
-NI_MODS =	 \
-    'extractdatamodule.mod' \
-    'tcalculations.mod'
-
+NI_MODS =	
 #Fortran Information files
 NI_FIFS =	 \
-	main.fif
+	inverse.fif
 
 #Library files
 NI_LIBS = 
@@ -50,31 +47,29 @@ NI_LIBS =
 #Dependencies
 NI_EQ==
 NI_SC=\;
-main.o:	main.f90
-extractdatamodule.mod:	main.f90
-tcalculations.mod:	main.f90
+inverse.o:	inverse.f90
 
 #Default make target rule
 $(NI_TARGET):$(NI_OBJS)
 	@echo @link
-	$(NI_Link) -o $(NI_OUTPUT) $(NI_LibPath) @'main.mako' $(NI_LDFLAGS) $(NI_NAGFOR_CompOpts) $(NI_LIBS)
+	$(NI_Link) -o $(NI_OUTPUT) $(NI_LibPath) @'inverse.mako' $(NI_LDFLAGS) $(NI_NAGFOR_CompOpts) $(NI_LIBS)
 
 #Other rules
-main.o extractdatamodule.mod tcalculations.mod:
-	@echo @nagfor main.f90
-	$(NI_NAGFOR_Compiler) $(NI_IFLAGS) $(NI_NAGFOR_CompOpts) $(NI_NAGFOR_NAGFORInfo) main.fif -c main.f90
+inverse.o:
+	@echo @nagfor inverse.f90
+	$(NI_NAGFOR_Compiler) $(NI_IFLAGS) $(NI_NAGFOR_CompOpts) $(NI_NAGFOR_NAGFORInfo) inverse.fif -c inverse.f90
 
 #Rebuild rule
 all:clean $(NI_OBJS)
 	@echo @link
-	$(NI_Link) -o $(NI_OUTPUT) $(NI_LibPath) @'main.mako' $(NI_LDFLAGS) $(NI_NAGFOR_CompOpts) $(NI_LIBS)
+	$(NI_Link) -o $(NI_OUTPUT) $(NI_LibPath) @'inverse.mako' $(NI_LDFLAGS) $(NI_NAGFOR_CompOpts) $(NI_LIBS)
 
 #Clean rule
 clean:
 	$(NI_RM) $(NI_OUTPUT)
-	$(NI_RM) main.o
+	$(NI_RM) inverse.o
 	$(NI_RM) $(NI_MODS)
-	$(NI_RM) main.fif
+	$(NI_RM) inverse.fif
 	$(NI_RM) fbvalwatch.vwi
 
 #Clean all rule

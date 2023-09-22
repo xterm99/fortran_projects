@@ -22,24 +22,24 @@ NI_RM = fbrm
 .SUFFIXES: .f90 .o 
 
 #Output file
-NI_OUTPUT = reader.f90.exe
+NI_OUTPUT = oscillante.exe
 
 #Target name
-NI_TARGET = reader.f90.exe
+NI_TARGET = oscillante.exe
 
 #Object files
 NI_OBJS =	 \
-	reader.f90.o
+	oscillante.o
 
 #Depend Object files
 NI_DOBJS =	 \
-	reader.f90.o
+	oscillante.o
 
 #Prospective Module files
 NI_MODS =	
 #Fortran Information files
 NI_FIFS =	 \
-	reader.f90.fif
+	oscillante.fif
 
 #Library files
 NI_LIBS = 
@@ -47,29 +47,29 @@ NI_LIBS =
 #Dependencies
 NI_EQ==
 NI_SC=\;
-reader.f90.o:	reader.f90.f90
+oscillante.o:	oscillante.f90
 
 #Default make target rule
 $(NI_TARGET):$(NI_OBJS)
 	@echo @link
-	$(NI_Link) -o $(NI_OUTPUT) $(NI_LibPath) @'reader.f90.mako' $(NI_LDFLAGS) $(NI_NAGFOR_CompOpts) $(NI_LIBS)
+	$(NI_Link) -o $(NI_OUTPUT) $(NI_LibPath) @'oscillante.mako' $(NI_LDFLAGS) $(NI_NAGFOR_CompOpts) $(NI_LIBS)
 
 #Other rules
-reader.f90.o:
-	@echo @nagfor reader.f90.f90
-	$(NI_NAGFOR_Compiler) $(NI_IFLAGS) $(NI_NAGFOR_CompOpts) $(NI_NAGFOR_NAGFORInfo) reader.f90.fif -c reader.f90.f90
+oscillante.o:
+	@echo @nagfor oscillante.f90
+	$(NI_NAGFOR_Compiler) $(NI_IFLAGS) $(NI_NAGFOR_CompOpts) $(NI_NAGFOR_NAGFORInfo) oscillante.fif -c oscillante.f90
 
 #Rebuild rule
 all:clean $(NI_OBJS)
 	@echo @link
-	$(NI_Link) -o $(NI_OUTPUT) $(NI_LibPath) @'reader.f90.mako' $(NI_LDFLAGS) $(NI_NAGFOR_CompOpts) $(NI_LIBS)
+	$(NI_Link) -o $(NI_OUTPUT) $(NI_LibPath) @'oscillante.mako' $(NI_LDFLAGS) $(NI_NAGFOR_CompOpts) $(NI_LIBS)
 
 #Clean rule
 clean:
 	$(NI_RM) $(NI_OUTPUT)
-	$(NI_RM) reader.f90.o
+	$(NI_RM) oscillante.o
 	$(NI_RM) $(NI_MODS)
-	$(NI_RM) reader.f90.fif
+	$(NI_RM) oscillante.fif
 	$(NI_RM) fbvalwatch.vwi
 
 #Clean all rule

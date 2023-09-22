@@ -1,0 +1,12 @@
+P SUBMATRIX_EXAMPLE:main,#h("oscillante.f90",1)
+ V I,i,Integer,int,,0,#t("oscillante.f90",7)
+ V TROS,tros,Real,float,,0,#t("oscillante.f90",4)
+ V TROS_MIN,tros_min,Real,float,,0,#t("oscillante.f90",4)
+ V ROW_INDEX,row_index,Integer,int,,0,#t("oscillante.f90",5)
+ V COLUMN_INDEX,column_index,Integer,int,,0,#t("oscillante.f90",5)
+ V MATRIX,matrix,Real,float,,2,f(1:20,1:10),#t("oscillante.f90",6)
+ V K,k,Integer,int,,0,#t("oscillante.f90",7)
+ V L,l,Integer,int,,0,#t("oscillante.f90",7)
+ V B,b,Real,float,,2,f(1:5,1:5),#t("oscillante.f90",8)
+ V C,c,Real,float,,2,f(1:5,1:5),#t("oscillante.f90",9)
+EP
